@@ -3,7 +3,7 @@
  * @link http://github.com/seffeng/
  * @copyright Copyright (c) 2020 seffeng
  */
-namespace Seffeng\Basics\Helpers;
+namespace Seffeng\LaravelHelpers\Helpers;
 
 /**
  * 此类源于 yii2
