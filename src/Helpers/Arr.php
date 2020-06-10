@@ -49,6 +49,27 @@ class Arr extends \Illuminate\Support\Arr
     }
 
     /**
+     * 获取数组深度
+     * @author zxf
+     * @date   2020年5月21日
+     * @param  array $array
+     * @return number
+     */
+    public static function getDepth(array $array)
+    {
+        $maxDepth = 1;
+        foreach ($array as $value) {
+            if (is_array($value)) {
+                $depth = self::getDepth($value) + 1;
+                if ($depth > $maxDepth) {
+                    $maxDepth = $depth;
+                }
+            }
+        }
+        return $maxDepth;
+    }
+
+    /**
      * Retrieves the value of an array element or object property with the given key or property name.
      * If the key does not exist in the array or object, the default value will be returned instead.
      *
@@ -341,23 +362,115 @@ class Arr extends \Illuminate\Support\Arr
     }
 
     /**
-     * 获取数组深度
-     * @author zxf
-     * @date   2020年5月21日
-     * @param  array $array
-     * @return number
+     * Sorts an array of objects or arrays (with the same structure) by one or several keys.
+     * @param array $array the array to be sorted. The array will be modified after calling this method.
+     * @param string|\Closure|array $key the key(s) to be sorted by. This refers to a key name of the sub-array
+     * elements, a property name of the objects, or an anonymous function returning the values for comparison
+     * purpose. The anonymous function signature should be: `function($item)`.
+     * To sort by multiple keys, provide an array of keys here.
+     * @param integer|array $direction the sorting direction. It can be either `SORT_ASC` or `SORT_DESC`.
+     * When sorting by multiple keys with different sorting directions, use an array of sorting directions.
+     * @param integer|array $sortFlag the PHP sort flag. Valid values include
+     * `SORT_REGULAR`, `SORT_NUMERIC`, `SORT_STRING`, `SORT_LOCALE_STRING`, `SORT_NATURAL` and `SORT_FLAG_CASE`.
+     * Please refer to [PHP manual](http://php.net/manual/en/function.sort.php)
+     * for more details. When sorting by multiple keys with different sort flags, use an array of sort flags.
+     * @throws \Exception if the $direction or $sortFlag parameters do not have
+     * correct number of elements as that of $key.
      */
-    public static function getDepth(array $array)
+    public static function multisort(&$array, $key, $direction = SORT_ASC, $sortFlag = SORT_REGULAR)
     {
-        $maxDepth = 1;
-        foreach ($array as $value) {
-            if (is_array($value)) {
-                $depth = self::getDepth($value) + 1;
-                if ($depth > $maxDepth) {
-                    $maxDepth = $depth;
-                }
+        $keys = is_array($key) ? $key : [$key];
+        if (empty($keys) || empty($array)) {
+            return;
+        }
+        $n = count($keys);
+        if (is_scalar($direction)) {
+            $direction = array_fill(0, $n, $direction);
+        } elseif (count($direction) !== $n) {
+            throw new \Exception('The length of $direction parameter must be the same as that of $keys.');
+        }
+        if (is_scalar($sortFlag)) {
+            $sortFlag = array_fill(0, $n, $sortFlag);
+        } elseif (count($sortFlag) !== $n) {
+            throw new \Exception('The length of $sortFlag parameter must be the same as that of $keys.');
+        }
+        $args = [];
+        foreach ($keys as $i => $key) {
+            $flag = $sortFlag[$i];
+            $args[] = static::getColumn($array, $key);
+            $args[] = $direction[$i];
+            $args[] = $flag;
+        }
+
+        // This fix is used for cases when main sorting specified by columns has equal values
+        // Without it it will lead to Fatal Error: Nesting level too deep - recursive dependency?
+        $args[] = range(1, count($array));
+        $args[] = SORT_ASC;
+        $args[] = SORT_NUMERIC;
+
+        $args[] = &$array;
+        call_user_func_array('array_multisort', $args);
+    }
+
+    /**
+     * Encodes special characters in an array of strings into HTML entities.
+     * Only array values will be encoded by default.
+     * If a value is an array, this method will also encode it recursively.
+     * Only string values will be encoded.
+     * @param array $data data to be encoded
+     * @param boolean $valuesOnly whether to encode array values only. If false,
+     * both the array keys and array values will be encoded.
+     * @param string $charset the charset that the data is using. If not set,
+     * [[\yii\base\Application::charset]] will be used.
+     * @return array the encoded data
+     * @see http://www.php.net/manual/en/function.htmlspecialchars.php
+     */
+    public static function htmlEncode($data, $valuesOnly = true, $charset = 'UTF-8')
+    {
+        $d = [];
+        foreach ($data as $key => $value) {
+            if (!$valuesOnly && is_string($key)) {
+                $key = htmlspecialchars($key, ENT_QUOTES | ENT_SUBSTITUTE, $charset);
+            }
+            if (is_string($value)) {
+                $d[$key] = htmlspecialchars($value, ENT_QUOTES | ENT_SUBSTITUTE, $charset);
+            } elseif (is_array($value)) {
+                $d[$key] = static::htmlEncode($value, $valuesOnly, $charset);
+            } else {
+                $d[$key] = $value;
             }
         }
-        return $maxDepth;
+
+        return $d;
+    }
+
+    /**
+     * Decodes HTML entities into the corresponding characters in an array of strings.
+     * Only array values will be decoded by default.
+     * If a value is an array, this method will also decode it recursively.
+     * Only string values will be decoded.
+     * @param array $data data to be decoded
+     * @param boolean $valuesOnly whether to decode array values only. If false,
+     * both the array keys and array values will be decoded.
+     * @return array the decoded data
+     * @see http://www.php.net/manual/en/function.htmlspecialchars-decode.php
+     */
+    public static function htmlDecode($data, $valuesOnly = true)
+    {
+        $d = [];
+        foreach ($data as $key => $value) {
+            if (!$valuesOnly && is_string($key)) {
+                $key = htmlspecialchars_decode($key, ENT_QUOTES);
+            }
+            if (is_string($value)) {
+                $d[$key] = htmlspecialchars_decode($value, ENT_QUOTES);
+            } elseif (is_array($value)) {
+                $d[$key] = static::htmlDecode($value);
+            } else {
+                $d[$key] = $value;
+            }
+        }
+
+        return $d;
     }
 }
