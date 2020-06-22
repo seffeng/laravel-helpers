@@ -83,7 +83,7 @@ class Xml
                 }
             }
         } elseif (is_object($data)) {
-            if (static::useObjectTags) {
+            if (static::$useObjectTags) {
                 $child = new DOMElement(Str::basename(get_class($data)));
                 $element->appendChild($child);
             } else {
