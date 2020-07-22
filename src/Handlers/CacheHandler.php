@@ -67,7 +67,7 @@ class CacheHandler
         try {
             $key = $this->getPrefix() . md5($method . Json::encode($parameters));
             $result = null;
-            if (!$this->getRefresh() && $result = Cache::get($key)) {
+            if ($this->getIsCache() && !$this->getRefresh() && $result = Cache::get($key)) {
                 return $result;
             } elseif ($this->object && method_exists($this->object, $method)) {
                 $result = $this->object->$method(...$parameters);

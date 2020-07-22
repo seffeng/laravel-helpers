@@ -78,3 +78,6 @@ class TestController extends Controller
 
 无
 
+### 更新
+
+* [changelog](./CHANGELOG.md)
