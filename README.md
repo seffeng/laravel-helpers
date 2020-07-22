@@ -11,12 +11,17 @@ $ composer require seffeng/laravel-helpers
 
 ```
 └─src
+    ├─Handlers
+    │   CacheHandler.php
     └─Helpers
         Arr.php
         Json.php
         ReplaceArrayValue.php
+        Str.php
         TimeHelper.php
         UnsetArrayValue.php
+        Util.php
+        Xml.php
 ```
 
 ### 示例
@@ -72,6 +77,4 @@ class TestController extends Controller
 ### 备注
 
 无
-
-
 
