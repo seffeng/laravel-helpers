@@ -55,4 +55,43 @@ class TimeHelper
         $week = date('w', $time);
         return $key . $weekItems[$week];
     }
+
+    /**
+     * 返回N年X月Y天
+     * @author zxf
+     * @date    2020年10月15日
+     * @param  int $startTime
+     * @param  int $endTime
+     * @return string
+     */
+    public static function asTimestampDiff(int $startTime, int $endTime, string $format = 'Y-m-d')
+    {
+        $startDate = new \DateTime(date($format, $startTime));
+        $endDate = new \DateTime(date($format, $endTime));
+        $interval = $endDate->diff($startDate);
+        $year = $interval->y;
+        $month = $interval->m;
+        $day = $interval->d;
+        $hour = $interval->h;
+        $minute = $interval->i;
+        $second = $interval->s;
+
+        return ($year > 0 ? ($year . '年') : '') . ($month > 0 ? ($month . '月') : '') . ($day > 0 ? ($day . '天') : '') .
+                ($hour > 0 ? ($hour . '时') : '') . ($minute > 0 ? ($minute . '分') : '') . ($second > 0 ? ($second . '秒') : '');
+    }
+
+    /**
+     * 秒转时长
+     * @author zxf
+     * @date    2020年10月15日
+     * @param int $time
+     * @param string $format
+     * @return string
+     */
+    public static function timeToString(int $time, string $format = 'Y-m-d H:i:s')
+    {
+        $startTime = time();
+        $endTime = $startTime + $time;
+        return self::asTimestampDiff($startTime, $endTime, $format);
+    }
 }
