@@ -29,10 +29,20 @@ class Xml
      */
     protected static $rootTag = 'response';
     /**
-     *
-     * @var boolean
+     * [true-使用Class作为DOMElement名称,false-无DOMElement名称,字符串-该字符串作为DOMElement名称]
+     * @var boolean|string
      */
     protected static $useObjectTags = true;
+    /**
+     * 使用Class作为DOMElement名称时，DOMElement名称使用小写字母
+     * @var boolean
+     */
+    protected static $lowercase  = true;
+    /**
+     * 过滤 NULL 值
+     * @var boolean
+     */
+    protected static $filter = false;
     /**
      *
      * @var string
@@ -83,15 +93,23 @@ class Xml
                 }
             }
         } elseif (is_object($data)) {
-            if (static::$useObjectTags) {
-                $child = new DOMElement(Str::basename(get_class($data)));
+            if (is_string(static::$useObjectTags)) {
+                $child = new DOMElement(static::$useObjectTags);
+                $element->appendChild($child);
+            } elseif (static::$useObjectTags) {
+                $rootTag = static::$lowercase ? strtolower(Str::basename(get_class($data))) : Str::basename(get_class($data));
+                $child = new DOMElement($rootTag);
                 $element->appendChild($child);
             } else {
                 $child = $element;
             }
             $array = [];
             foreach ($data as $name => $value) {
-                $array[$name] = $value;
+                if (static::$filter) {
+                    !is_null($value) && $array[$name] = $value;
+                } else {
+                    $array[$name] = $value;
+                }
             }
             static::buildXml($child, $array);
         } else {
