@@ -18,7 +18,7 @@ class Crypt extends Command
      */
     protected $signature = 'crypt
                         {value : 待加密或解密的字符串或文件}
-                        {--decrypt : 是否解密，无此选项时为加密}';
+                        {--d|decrypt : 是否解密，无此选项时为加密}';
 
     /**
      * The console command description.

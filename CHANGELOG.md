@@ -20,8 +20,8 @@
   $ php artisan crypt ./aa.txt
   
   # 示例，解密被加密字符串 或 文件内字符串
-  $ php artisan crypt --decrypt eyJpdiI6Ik5sMXA....
-  $ php artisan crypt --decrypt ./aa.txt
+  $ php artisan crypt -d eyJpdiI6Ik5sMXA....
+  $ php artisan crypt -d ./aa.txt
   
   # 帮助
   $ php artisan crypt -h
