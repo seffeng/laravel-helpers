@@ -146,7 +146,7 @@ class Str extends \Illuminate\Support\Str
         $value = trim($value, $delimiter);
 
         if (strpos($value, $delimiter) !== false) {
-            $items = array_unique(explode($delimiter, $value));
+            $items = array_filter(array_unique(explode($delimiter, $value)));
         } elseif ($value) {
             $items = [$value];
         } else {
