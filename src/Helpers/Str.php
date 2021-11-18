@@ -130,4 +130,28 @@ class Str extends \Illuminate\Support\Str
 
         return $path;
     }
+
+    /**
+     * 字符串转数组
+     * @author zxf
+     * @date   2021年11月18日
+     * @param string $value
+     * @param string $delimiter
+     * @param mixed $replace
+     * @return array
+     */
+    public static function toArray(string $value, string $delimiter, $replace = null)
+    {
+        $replace && $value = Str::replace($replace, '', $value);
+        $value = trim($value, $delimiter);
+
+        if (strpos($value, $delimiter) !== false) {
+            $items = array_unique(explode($delimiter, $value));
+        } elseif ($value) {
+            $items = [$value];
+        } else {
+            $items = [];
+        }
+        return $items;
+    }
 }
