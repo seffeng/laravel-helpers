@@ -35,4 +35,51 @@ class Util
             return floor(($size / pow($units, $i - 1)) * $decimPow) / $decimPow .$pad . $unitItems[$i - 1];
         }
     }
+
+    /**
+     * 解析URL
+     * @author zxf
+     * @date   2022年1月7日
+     * @param string $url
+     * @param int $component
+     * @return string|boolean
+     */
+    public static function parseUrl(string $url, int $component = -1)
+    {
+        $parseUrl = parse_url($url, $component);
+        if ($parseUrl) {
+            $host = Arr::get($parseUrl, 'host', '');
+            $port = Arr::get($parseUrl, 'port', '');
+            $user = Arr::get($parseUrl, 'user', '');
+            $pass = Arr::get($parseUrl, 'pass', '');
+            $path = Arr::get($parseUrl, 'path', '');
+            $query = Arr::get($parseUrl, 'query', '');
+            $fragment = Arr::get($parseUrl, 'fragment', '');
+
+            $url = '';
+            $user && $url .= $user;
+            $pass && $url .= ':' . $pass;
+            $user && $url .= '@';
+            $url .= $host;
+            $port && $url .= ':' . $port;
+            $path && $url .= $path;
+
+            if ($query) {
+                $queryArr = [];
+                parse_str($query, $queryArr);
+                ksort($queryArr);
+                $url .= '?';
+                $i = 0;
+                foreach ($queryArr as $k => $q) {
+                    $url .= ($i > 0 ? '&' : '') . $k . '=' . $q;
+                    $i++;
+                }
+            }
+
+            $fragment && $url .= '#' . $fragment;
+            $parseUrl['url'] = $url;
+            return $parseUrl;
+        }
+        return false;
+    }
 }
