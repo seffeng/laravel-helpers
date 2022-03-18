@@ -81,3 +81,6 @@ class TestController extends Controller
 ### 更新
 
 * [changelog](./CHANGELOG.md)
+  * 2022-03-17
+  * 2021-06-17
+  * 2020-07-21

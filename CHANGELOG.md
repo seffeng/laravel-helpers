@@ -1,5 +1,57 @@
 ### 更新日志
 
+* 2022-03-17
+
+  * 增加sql查询日志
+
+    ```php
+    # 1、App\Providers\EventServiceProvider 中增加监听
+    
+    use Illuminate\Database\Events\QueryExecuted;
+    use Seffeng\LaravelHelpers\Listeners\QueryExecutedListener;
+    
+    protected $listen = [
+        QueryExecuted::class => [
+            QueryExecutedListener::class // 此类可用第3步的替换
+        ],
+    ];
+    
+    # 2、[可选]增加日志配置 config/logging.php，不配置时用默认日志
+    'channels' => [
+        ...
+    
+        'sqllog' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/query.log'),
+            'level' => 'debug',
+            'days' => 7,
+        ],
+    
+        ...
+    ];
+    
+    # 3、[可选]增加类继承 QueryExecutedListener，用于配置日志记录通道
+    
+    use Seffeng\LaravelHelpers\Listeners\QueryExecutedListener;
+    class QueryListener extends QueryExecutedListener
+    {
+        /**
+         * 对应第2步的配置，不设置此属性将使用默认日志通道
+         * @var string
+         */
+        protected $channel = 'sqllog';
+        
+        /**
+         * 设置是否记录日志[true时记录，null时当 app.debug=true 时记录]
+         * @var boolean
+         */
+        protected $debug;
+    }
+    
+    ```
+
+---
+
 * 2021-06-17
 
   * 增加控制台加密解密命令
