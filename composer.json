@@ -18,9 +18,9 @@
     ],
     "require" : {
         "php" : ">=5.6",
-        "illuminate/console": "^8.83",
-        "illuminate/database": "^8.83",
-        "illuminate/encryption": "^8.83",
+        "illuminate/console": ">=5.0",
+        "illuminate/database": ">=5.0",
+        "illuminate/encryption": ">=5.0",
         "illuminate/support": ">=5.0",
         "seffeng/arr-helper": ">=0.1.0",
         "seffeng/format-helper": ">=0.1.0",
