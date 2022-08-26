@@ -3,6 +3,6 @@
 .project
 .settings
 .vscode
-composer.lock
 vendor
+composer.lock
 !.gitignore

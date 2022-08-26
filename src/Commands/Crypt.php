@@ -90,7 +90,7 @@ class Crypt extends Command
     {
         return 'base64:'.base64_encode(
             Encrypter::generateKey($this->laravel['config']['app.cipher'])
-            );
+        );
     }
 
 

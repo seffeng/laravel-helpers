@@ -5,7 +5,10 @@
  */
 namespace Seffeng\LaravelHelpers\Helpers;
 
-class Util extends \Seffeng\Helpers\Util
-{
+use Seffeng\FormatHelper\Traits\FormatTrait;
+use Seffeng\UrlHelper\Traits\UrlTrait;
 
+class Util
+{
+    use FormatTrait, UrlTrait;
 }

@@ -5,7 +5,7 @@
  */
 namespace Seffeng\LaravelHelpers\Helpers;
 
-class TimeHelper extends \Seffeng\Helpers\Time
+class Time extends \Seffeng\TimeHelper\Time
 {
 
 }

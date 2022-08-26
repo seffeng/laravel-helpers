@@ -5,7 +5,7 @@
  */
 namespace Seffeng\LaravelHelpers\Helpers;
 
-class Xml extends \Seffeng\Helpers\Xml
+class Xml extends \Seffeng\XmlHelper\Xml
 {
 
 }

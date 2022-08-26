@@ -2,6 +2,8 @@
 
 use PHPUnit\Framework\TestCase;
 use Seffeng\LaravelHelpers\Helpers\Arr;
+use Seffeng\ArrHelper\ReplaceArrayValue;
+use Seffeng\ArrHelper\UnsetArrayValue;
 
 class ArrTest extends TestCase
 {
@@ -14,7 +16,53 @@ class ArrTest extends TestCase
 
     public function testGetValue()
     {
-        var_dump(Arr::get($this->value, 'a.name', '000'));
-        var_dump(Arr::get($this->value, 'a.age', '000'));
+        var_dump(Arr::getValue($this->value, 'a.name', '000'));
+        var_dump(Arr::getValue($this->value, 'a.age', '000'));
+    }
+
+    public function testGetDepth()
+    {
+        var_dump(Arr::getDepth($this->value));
+    }
+
+    public function testIndex()
+    {
+        print_r(Arr::index($this->value, 'id'));
+    }
+
+    public function testGetColumn()
+    {
+        print_r(Arr::getColumn($this->value, 'name'));
+    }
+
+    public function testMerge()
+    {
+        print_r(Arr::merge($this->value, ['b' => ['id' => 222], 'd' => ['id' => 5]]));
+
+        print_r(Arr::merge($this->value, [
+            'b' => new ReplaceArrayValue(['name' => 'new bbbb()']),
+            'c' => [
+                'cname' => '---ccc---',
+                'detail' => '---detail---'
+            ]
+        ]));
+
+        print_r(Arr::merge($this->value, ['b' => new UnsetArrayValue()]));
+    }
+
+    public function testMultisort()
+    {
+        Arr::multisort($this->value, 'id');
+        print_r($this->value);
+    }
+
+    public function testHtmlEncode()
+    {
+        print_r(Arr::htmlEncode($this->value));
+    }
+
+    public function testHtmlDecode()
+    {
+        print_r(Arr::htmlDecode($this->value));
     }
 }

@@ -5,17 +5,9 @@
  */
 namespace Seffeng\LaravelHelpers\Helpers;
 
-class Arr extends \Seffeng\Helpers\Arr
+use Seffeng\ArrHelper\Traits\ArrTrait;
+
+class Arr extends \Illuminate\Support\Arr
 {
-    /**
-     *
-     * @param array $array
-     * @param string|integer $key
-     * @param string|mixed $default
-     * @return mixed
-     */
-    public static function get($array, $key, $default = null)
-    {
-        return static::getValue($array, $key, $default);
-    }
+    use ArrTrait;
 }

@@ -5,7 +5,7 @@
  */
 namespace Seffeng\LaravelHelpers\Helpers;
 
-class Json extends \Seffeng\Helpers\Json
+class Json extends \Seffeng\JsonHelper\Json
 {
 
 }

@@ -10,18 +10,27 @@ $ composer require seffeng/laravel-helpers
 ### 目录说明
 
 ```
-└─src
-    ├─Handlers
-    │   CacheHandler.php
-    └─Helpers
-        Arr.php
-        Json.php
-        ReplaceArrayValue.php
-        Str.php
-        TimeHelper.php
-        UnsetArrayValue.php
-        Util.php
-        Xml.php
++---src
+|   +---Commands
+|   |       Crypt.php
+|   +---Handlers
+|   |       CacheHandler.php
+|   +---Helpers
+|   |       Arr.php
+|   |       Json.php
+|   |       Str.php
+|   |       Time.php
+|   |       Util.php
+|   |       Xml.php
+|   \---Listeners
+|           QueryExecutedListener.php
++---tests
+|       ArrTest.php
+|       JsonTest.php
+|       StrTest.php
+|       TimeTest.php
+|       UtilTest.php
+|       XmlTest.php
 ```
 
 ### 示例
@@ -35,8 +44,8 @@ namespace App\Http\Controllers;
 
 use Seffeng\LaravelHelpers\Helpers\Arr;
 use Seffeng\LaravelHelpers\Helpers\Json;
-use Seffeng\LaravelHelpers\Helpers\TimeHelper;
-use Seffeng\LaravelHelpers\Helpers\ReplaceArrayValue;
+use Seffeng\LaravelHelpers\Helpers\Time;
+use Seffeng\ArrHelper\ReplaceArrayValue;
 
 class TestController extends Controller
 {
@@ -69,7 +78,7 @@ class TestController extends Controller
         $json = Json::encode($arr);
         var_dump($json);
         print_r(Json::decode($json));
-        var_dump(TimeHelper::asWeekCN(time()));
+        var_dump(Time::asWeekCN(time()));
     }
 }
 ```
