@@ -65,7 +65,7 @@ class CacheHandler
     public function __call($method, $parameters)
     {
         try {
-            $key = $this->getPrefix() . md5($method . Json::encode($parameters));
+            $key = $this->getPrefix() . get_class($this->object) . ':' . md5($method . Json::encode($parameters));
             $result = null;
             if ($this->getIsCache() && !$this->getRefresh() && $result = Cache::get($key)) {
                 return $result;
