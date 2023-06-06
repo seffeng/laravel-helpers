@@ -45,7 +45,7 @@ class CacheHandler
      * @author zxf
      * @date   2020年7月21日
      * @param mixed $object
-     * @param int $ttl
+     * @param integer $ttl
      * @param string $prefix
      */
     public function __construct(object $object = null, int $ttl = null, string $prefix = null)
@@ -159,7 +159,7 @@ class CacheHandler
      *
      * @author zxf
      * @date   2020年7月21日
-     * @return number
+     * @return integer
      */
     public function getTTL()
     {
@@ -170,7 +170,7 @@ class CacheHandler
      *
      * @author zxf
      * @date   2020年7月21日
-     * @param int $ttl
+     * @param integer $ttl
      * @return \Seffeng\LaravelHelpers\Handlers\CacheHandler
      */
     public function setTTL(int $ttl)
